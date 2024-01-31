@@ -13,7 +13,7 @@
                         </a>
                     </li>
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <a href="/sales" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
+                        <a href="" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
                             <span class="ui-link__text"><span itemprop="name">
                                 Акции
                             </span> 
@@ -24,7 +24,7 @@
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
                         <span itemprop="item">
                             <span itemprop="name">
-                                Здоровье и красота в один клик
+                                {{ promos.title }}
                             </span>
                             <meta itemprop="position" content="3">
                         </span>
@@ -34,8 +34,8 @@
             <section class="promo-details-page__details content-section-small container">
                 <div class="promo-details-page__cover-area">
                     <div class="promo-details-page__cover">
-                        <img :src="'https://sklad-zdorovo.ru/images/promo/' + $route.params.id + '.png'" 
-                        :srcset="'https://sklad-zdorovo.ru/images/promo/' + $route.params.id + '.png 1x'" 
+                        <img :src="'https://sklad-zdorovo.ru' + promos.image + ''" 
+                        :srcset="'https://sklad-zdorovo.ru' + promos.image + ''" 
                         alt="Здоровье и красота в один клик" 
                         class="promo-details-page__image">
 
@@ -43,10 +43,10 @@
                 </div> 
                 <div class="promo-details-page__info">
                     <h1 class="text text_size_display-1 text_weight_bold">
-                        {{ $route.params.title }}
+                        {{ promos.title }}
                     </h1> 
                     <div class="promo-details-page__period">
-                        {{$route.params.dateStart}} — {{$route.params.dateEnd}}
+                        {{ promos.dateStart }} — {{ promos.dateEnd }}
                     </div> <!---->
                 </div>
             </section>          
@@ -59,7 +59,7 @@
             <div class="load-more-section__part">
                 <div itemtype="http://schema.org/ItemList" itemscope="itemscope" class="goods-grid conainer-ignore-mobile">
                     <div class="goods-grid__inner">
-                        <div itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
+                        <div v-for="(goods, index) in goods.goods" :key="index" itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
                             <div class="ui-card__preview ui-card__row ui-card__row_size_default">
                                 <div class="goods-tags goods-card__tags text text_size_caption">
                                     <ul class="goods-tags__list goods-tags__list_direction_vertical">
@@ -86,25 +86,25 @@
                                         </span>
                                     </span> 
                                     <a href="/catalog/Bioderma-AVSderm-Krem-intensivnyy-uhod-75g-0-mes_270078288" class="" tabindex="-1">
-                                        <img :src="'https://sklad-zdorovo.ru'" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
+                                        <img :src="'https://sklad-zdorovo.ru' + goods.images" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
                                     </a>
                                 </div>
                             </div> 
                             <div class="ui-card__content ui-card__row ui-card__row_size_default"> 
                                 <div class="goods-card__name text text_size_default text_weight_medium">
                                     <a href="/catalog/Bioderma-AVSderm-Krem-intensivnyy-uhod-75g-0-mes_270078288" class="goods-card__link" itemprop="url">
-                                        <span itemprop="name">Bioderma АВСдерм Крем интенсивный уход 75г 0+мес</span>
+                                        <span itemprop="name">{{goods.name}}</span>
                                     </a>
                                 </div> 
                                 <div class="goods-card__data text text_size_small goods-card__form_space_default">
                                     <div itemprop="manufacturer" itemtype="https://schema.org/Organization" itemscope="itemscope" class="goods-card__producer text">
-                                        <span itemtype="location">Франция</span>,
-                                        <span itemtype="legalName">НАОС Лаборатория Биодерма</span>
+                                        <span itemtype="location">{{ goods.country }}</span>,
+                                        <span itemtype="legalName">{{goods.producer}}</span>
                                     </div>
                                     <div class="goods-card__delivery-availability text text_weight_medium">
                                         <a tabindex="0" class="ui-link ui-link_theme_primary"><!----> 
                                             <span class="ui-link__text">В наличии в 5 аптеках<span>
-                                                <br>от 1 251.00 ₽</span>
+                                                <br></span>
                                             </span> <!---->
                                         </a>
                                     </div> 
@@ -126,7 +126,7 @@
                                                     </path>
                                                 </svg>
                                             </i> 
-                                            <span class="ui-button__content">В наличии <span>от 1 251.00 ₽</span>
+                                            <span class="ui-button__content">В наличии <span>от {{ goods.startPrice}} ₽</span>
                                             </span> <!---->
                                         </span> <!---->
                                     </button>
@@ -144,40 +144,58 @@
 <script>
 import Header from '~/components/Header.vue';
 import Footer from '~/components/Footer.vue';
-import promo from '~/pages/promo.vue';
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
-import { mapMutations } from 'vuex';
-import { mapState } from 'vuex';
 
 export default {
-  name: 'promo',
-  components: { Header, Footer,},
+  name: 'promoPage',
+  components: { Header, Footer},
+  validate({params}){
+    return /^\d+$/.test(params.id);
+  },
   data() {
     return {
-      goods: {},// массив для хранения данных о промо-акциях
+      promos: {},
+      goods: {},
     };
   },
   methods: {
-    // запрос на картинки товаров
-    async fetchData() {
+    // получение акций и товаров
+    async fetchData(params) {
       try {
-        const response = await fetch('https://sklad-zdorovo.ru/api/promo/${{????}}/goods?limit=${????}&offset=${????}', {
+        const response = await fetch('/api/promo/' + params.id, { // запрос к акциями по id
           method: 'GET',
         });
-        // ответ json
+
+        const response_goods = await fetch('/api/promo/'+ params.id +'/goods?limit='+10+'&offset=' + 10,{ //запрос к товарам по акции
+            method: 'GET',
+        });
+
         const data = await response.json();      
-        this.goods = data;
+        const data_goods = await response_goods.json();
+        
+        this.promos = data;
+        this.goods = data_goods;
+
       } catch (error) {
-        console.error("Error in fetchData:", error); // error
+        console.error("Error in fetchData:", error);
+        console.log(params.id);
       }
       
     },
   },
   async mounted() {
-    await this.fetchData();
+    await this.fetchData(this.$route.params);
+    console.log(this.goods);
   },
 };
 </script>
+
+
+
+
+
+
+
+
 <style>
     body {
     font-family: Ubuntu,system-ui,-apple-system,Segoe UI,Roboto,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
@@ -189,7 +207,13 @@ export default {
 }
 </style>
 <style scoped>
-.goods-grid__cell{
+.ui-card__preview img{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    max-width: 100%;
+    max-height: 100%;
+    transform: translate(-50%,-50%);
 }
 .ui-button__content {
     flex-basis: auto;

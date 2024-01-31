@@ -27,12 +27,12 @@
         <section class="content-section container">
             <div class="promos-grid">
                 <ul class="promos-grid__inner">
-                    <li class="promos-grid__cell" v-for="(promo, index) in promos.promos" :key="index">
+                    <li class="promos-grid__cell" v-for="(promo, index) in promos.promos" :key="index" >
                     <div class="promo-card">
                         <div class="promo-card__preview">
-                        <router-link :to="{ name: 'promo', params: { id: promo.id, title: promo.title, dateStart: promo.dateStart, dateEnd: promo.dateEnd }}" class="promo-preview" :aria-label="promo.title" @click="handlePromoClick(promo.id, promo.title, promo.dateStart, promo.dateEnd)">
+                        <a href="" class="promo-preview" :aria-label="promo.title" @click.prevent="handlePromoClick(promo.id)">
                             <img :src="'https://sklad-zdorovo.ru' + promo.image" loading="lazy" :alt="promo.title" class="promo-preview__image">
-                        </router-link> 
+                        </a> 
                         </div>
                         <div class="promo-card__details">
                         <a :href="'/promo'" class="promo-card__link text text_size_lead text_weight_bold">
@@ -108,43 +108,41 @@
 <script>
 import Header from '~/components/Header.vue';
 import Footer from '~/components/Footer.vue';
-import promo from '~/pages/promo.vue';
-import { NuxtAxiosInstance } from '@nuxtjs/axios';
-import { mapMutations } from 'vuex';
 
 export default {
   name: 'IndexPage',
-  components: { Header, Footer, promo },
+  components: { Header, Footer},
   data() {
     return {
-      promos: {}, // массив для хранения данных о промо-акциях
+      promos: {},
     };
   },
   methods: {
-    async handlePromoClick(promoId, title, dateStart, dateEnd) {
-        await this.$store.commit('setMyVariable', promoId);
-        console.log("myVariable внутри fetchData:", this.$store.state.myVariable);
-        this.$router.push({ name: 'promo', params: { promoId, title, dateStart, dateEnd } });
+    async handlePromoClick(id) {
+        this.$router.push('/promos/' + id)
     },
+
     // получа
     async fetchData() {
-      try {
-        const response = await fetch('https://sklad-zdorovo.ru/api/promo', {
-          method: 'GET',
-        });
+        try {
+            const response = await fetch('/api/promo', {
+                method: "GET",
+            });
 
-        const data = await response.json();      
-        this.promos = data;
-      } catch (error) {
-        console.error("Error in fetchData:", error);
-      }
-      
+            const data = await response.json();      
+
+            this.promos = data;
+        } 
+        catch (error) {
+            console.error("Error in fetchData:", error);
+        }
     },
   },
   async mounted() {
     await this.fetchData();
   },
 };
+
 </script>
 
 <style scoped>
