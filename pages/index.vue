@@ -108,6 +108,7 @@
 <script>
 import Header from '~/components/Header.vue';
 import Footer from '~/components/Footer.vue';
+import moment from 'moment';
 
 export default {
   name: 'IndexPage',
@@ -129,9 +130,14 @@ export default {
                 method: "GET",
             });
 
-            const data = await response.json();      
+            const data = await response.json();   
 
             this.promos = data;
+
+            data.promos.forEach(promo => {
+                promo.dateStart = moment(promo.dateStart).format('DD.MM.YYYY');
+                promo.dateEnd = moment(promo.dateEnd).format('DD.MM.YYYY');
+            });
         } 
         catch (error) {
             console.error("Error in fetchData:", error);

@@ -144,6 +144,7 @@
 <script>
 import Header from '~/components/Header.vue';
 import Footer from '~/components/Footer.vue';
+import moment from 'moment';
 
 export default {
   name: 'promoPage',
@@ -174,6 +175,9 @@ export default {
         
         this.promos = data;
         this.goods = data_goods;
+
+        this.promos.dateStart = moment(this.promos.dateStart).format('DD.MM.YYYY');
+        this.promos.dateEnd = moment(this.promos.dateEnd).format('DD.MM.YYYY');
 
       } catch (error) {
         console.error("Error in fetchData:", error);
