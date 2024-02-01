@@ -42,6 +42,11 @@ export default {
     '/api/': { target: 'https://sklad-zdorovo.ru', changeOrigin: true },
   },
 
+  server: {
+    host: '0.0.0.0', // Слушаем на всех интерфейсах
+    port: 3000
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   }
