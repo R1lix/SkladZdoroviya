@@ -23,7 +23,7 @@
   
   .promos-into-list img {
     max-width: 100%;
-    object-fit: cover; /* Заполнение блока содержимым */
+    object-fit: cover;
     border-radius: 15px;
     z-index: 2;
   }
@@ -47,19 +47,19 @@
   .default-page::after {
     content: '';
     display: block;
-    width: 1px; /* Толщина линии */
-    height: 100%; /* Высота линии, равная контейнеру */
-    background-color: #ffffff; /* Цвет линии */
+    width: 1px;
+    height: 100%;
+    background-color: #ffffff;
   }
   .default-page::after {
     content: '';
     position: absolute;
-    top: 0%; /* располагает линию посередине */
+    top: 0%;
     left: 0;
-    width: 100%; /* ширина линии равна ширине контейнера */
-    height: 1px; /* высота линии */
-    background-color: #888888; /* цвет линии */
-    z-index: 1; /* устанавливает линию "выше" других элементов */
+    width: 100%;
+    height: 1px;
+    background-color: #888888;
+    z-index: 1;
     opacity: 70%;
   }
   .button-section{

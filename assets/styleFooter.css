@@ -126,11 +126,6 @@ nav {
 img {
     border-style: none;
 }
-/* img[Attributes Style] {
-    width: 300px;
-    aspect-ratio: auto 300 / 25;
-    height: 25px;
-} */
 user agent stylesheet
 img {
     overflow-clip-margin: content-box;
