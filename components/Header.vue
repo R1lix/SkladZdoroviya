@@ -11,9 +11,9 @@
             </div>
             <ul class="list-menu">
               <li class="list-menu-item"><nuxt-link to="/">Главная</nuxt-link></li>
-              <li class="list-menu-item"><nuxt-link to="/about">Акции</nuxt-link></li>
-              <li class="list-menu-item"><nuxt-link to="/about">Аптеки</nuxt-link></li>
-              <li class="list-menu-item"><nuxt-link to="/about">Как заказать</nuxt-link></li>
+              <li class="list-menu-item"><nuxt-link to="/promos">Акции</nuxt-link></li>
+              <li class="list-menu-item"><nuxt-link to="#">Аптеки</nuxt-link></li>
+              <li class="list-menu-item"><nuxt-link to="#">Как заказать</nuxt-link></li>
             </ul>
           </nav>
           <div class="btn-controls">
@@ -98,7 +98,7 @@
               </div>
             </form> <!---->
           </div> 
-          <a href="/shopcart" tabindex="0" class="ui-button ui-button_theme_ghost ui-button_corners_smooth ui-button_size_default ui-button_outline">
+          <a href="#" tabindex="0" class="ui-button ui-button_theme_ghost ui-button_corners_smooth ui-button_size_default ui-button_outline">
             <span class="ui-button__inner">
               <i class="ui-icon ui-icon_size_24 ui-icon_cart ui-button__icon ui-button__icon_prefix">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg">
@@ -136,7 +136,7 @@
   }
   </style>
   
-  <style scoped>
+  <!-- <style scoped>
   
   /* HEADER */
   .header {
@@ -536,5 +536,5 @@
   i {
       font-style: italic;
   }
-  </style>
+  </style> -->
   

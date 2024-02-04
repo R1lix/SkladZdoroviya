@@ -1,58 +1,48 @@
-<template>
-    <div class="layout-default__page">
-        <Header/>
-        <main class="promo-details-page page">
-            <div itemtype="http://schema.org/BreadcrumbList" itemscope="itemscope" class="ui-breadcrumbs text text_weight_medium text text_size_caption container">
-                <ul class="ui-breadcrumbs__list">
-                    <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <a href="/" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
-                            <span class="ui-link__text">
-                                <span itemprop="name">Главная</span> 
-                                <meta itemprop="position" content="1">
-                            </span> <!---->
-                        </a>
-                    </li>
-                    <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <a href="/promos" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
-                            <span class="ui-link__text"><span itemprop="name">
-                                Акции
-                            </span> 
-                            <meta itemprop="position" content="2">
-                        </span> <!---->
-                        </a>
-                    </li>
-                    <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <span itemprop="item">
-                            <span itemprop="name">
-                                {{ promos.title }}
-                            </span>
-                            <meta itemprop="position" content="3">
-                        </span>
-                    </li>
-                </ul>
-            </div>
-            <section class="promo-details-page__details content-section-small container">
-                <div class="promo-details-page__cover-area">
-                    <div class="promo-details-page__cover">
-                        <img :src="'https://sklad-zdorovo.ru' + promos.image + ''" 
-                        :srcset="'https://sklad-zdorovo.ru' + promos.image + ''" 
-                        alt="Здоровье и красота в один клик" 
-                        class="promo-details-page__image">
+<script>
+export default {
+  name: 'Goods',
+  data() {
+    return {
+      goods: [],
+      limit: 12,
+      offset: 0,
+    };
+  },
+  methods: {
+    // получение акций и товаров
+    async fetchData() {
+        try {
+                // запрос к товарам
+            const responseGoods = await fetch('/api/promo/'+ 405 +'/goods?limit='+this.limit+'&offset=' + this.offset,{
+                 method: 'GET',
+            });
+            const dataGoods = await responseGoods.json();
+            this.goods = this.goods.concat(dataGoods.goods);
 
-                    </div>
-                </div> 
-                <div class="promo-details-page__info">
-                    <h1 class="text text_size_display-1 text_weight_bold">
-                        {{ promos.title }}
-                    </h1> 
-                    <div class="promo-details-page__period">
-                        {{ promos.dateStart }} — {{ promos.dateEnd }}
-                    </div> <!---->
-                </div>
-            </section>          
-            <section class="load-more-section content-section-large container">
+            if (Object.keys(this.goods) != null) {
+                console.log(Object.keys(this.goods));
+                this.offset += this.limit;
+            } else {
+                // document.getElementById('button').classList.add('hidden'); <-- не работает
+            }
+
+        } catch (error) {
+            console.error("Error in fetchData:", error);
+            console.log(this.goods);
+        } 
+    },
+  },
+  async mounted() {
+    await this.fetchData();
+  },
+}
+</script>
+
+<template>
+    <main class="promo-details-page page">        
+        <section class="load-more-section content-section-large container">
                 <h2 class="promo-details-page__subtitle text text_size_headline text_weight_bold">
-                    Товары участвующие в акции
+                    Обратите внимание
                 </h2> 
             <div class="load-more-section__part">
                 <div itemtype="http://schema.org/ItemList" itemscope="itemscope" class="goods-grid conainer-ignore-mobile">
@@ -83,7 +73,7 @@
                                             </i>
                                         </span>
                                     </span> 
-                                    <a href="#" class="" tabindex="-1">
+                                    <a href="/catalog/Bioderma-AVSderm-Krem-intensivnyy-uhod-75g-0-mes_270078288" class="" tabindex="-1">
                                         <img :src="'https://sklad-zdorovo.ru' + goods.images" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
                                     </a>
                                 </div>
@@ -133,91 +123,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="button-section">
-                    <button class="button-section-load-more ui-button ui-button__inner" @click="LoadMore(params)" :id="'button'">
-                        <span class="button-section-load-more-inner">
-                            <i class="button-section-load-more-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg"><path d="M18.707 13.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L11 17.586V4a1 1 0 112 0v13.586l4.293-4.293a1 1 0 011.414 0z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                            </i>
-                            <span class="button-section-load-more-inner-content">
-                                Показать еще
-                            </span>
+            </div>
+            <div class="button-section">
+                <button class="button-section-load-more ui-button ui-button__inner" @click="fetchData()" :id="'button'">
+                    <span class="button-section-load-more-inner">
+                        <i class="button-section-load-more-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg"><path d="M18.707 13.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L11 17.586V4a1 1 0 112 0v13.586l4.293-4.293a1 1 0 011.414 0z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                        </i>
+                        <span class="button-section-load-more-inner-content">
+                            Показать еще
                         </span>
-                    </button>
-                </div>
+                    </span>
+                </button>
             </div>
         </section>
     </main>
-    <Footer/>
-</div>
 </template>
-<script>
-import Header from '~/components/Header.vue';
-import Footer from '~/components/Footer.vue';
-import moment from 'moment';
-
-export default {
-  name: 'promoPage',
-  components: { Header, Footer},
-  validate({params}){
-    return /^\d+$/.test(params.id);
-  },
-  data() {
-    return {
-      promos: {},
-      goods: [],
-      limit: 12,
-      offset: 0,
-      promoId: null
-    };
-  },
-  methods: {
-    // получение акций и товаров
-    async fetchData(params) {
-      try {
-        const response = await fetch('/api/promo/' + params.id, { // запрос к акциями по id
-          method: 'GET',
-        });
-
-        const responseGoods = await fetch('/api/promo/'+ params.id +'/goods?limit='+this.limit+'&offset=' + this.offset,{ //запрос к товарам по акции
-            method: 'GET',
-        });
-
-        const data = await response.json();      
-        const dataGoods = await responseGoods.json();
-        
-        this.promos = data;
-        this.goods = dataGoods.goods;
-
-        this.promos.dateStart = moment(this.promos.dateStart).format('DD.MM.YYYY');
-        this.promos.dateEnd = moment(this.promos.dateEnd).format('DD.MM.YYYY');
-
-        this.promoId = params.id;
-
-      } catch (error) {
-        console.error("Error in fetchData:", error);
-      }
-      
-    },
-    async LoadMore(){
-        const responseGoods = await fetch('/api/promo/'+ this.promoId +'/goods?limit='+this.limit+'&offset=' + this.offset,{ //запрос к товарам по акции
-            method: 'GET',
-        });
-
-        const dataGoods = await responseGoods.json();
-        
-        this.goods = this.goods.concat(dataGoods.goods);
-
-        if (Object.keys(this.goods) != null) {
-            console.log(Object.keys(this.goods));
-            this.offset += this.limit;
-        } else {
-            // document.getElementById('button').classList.add('hidden'); <-- не работает
-        }
-    }
-  },
-  async mounted() {
-    await this.fetchData(this.$route.params);
-  },
-};
-</script>

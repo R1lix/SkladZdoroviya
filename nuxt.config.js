@@ -18,6 +18,13 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '@assets/normalize.css',
+    '@assets/styleBody.css',
+    '@assets/styleHeaderCatalog.css',
+    '@assets/styleFooter.css',
+    '@assets/styleSpecials.css',
+    '@assets/styleSpecialTarget.css',
+    '@assets/mainPage.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -43,7 +50,7 @@ export default {
   },
 
   server: {
-    host: '0.0.0.0', // Слушаем на всех интерфейсах
+    host: '0.0.0.0',
     port: 3000
   },
 

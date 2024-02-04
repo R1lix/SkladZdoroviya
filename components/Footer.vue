@@ -90,7 +90,8 @@ export default {
 },
 }
 </script>
-<style scoped>
+
+<!-- <style scoped>
 img {
     overflow-clip-margin: content-box;
     overflow: clip;
@@ -292,4 +293,4 @@ a:-webkit-any-link {
     padding-bottom: 48px;
 }
 
-</style>
+</style> -->
