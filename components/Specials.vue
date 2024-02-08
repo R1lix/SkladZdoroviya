@@ -1,3 +1,8 @@
+<script>
+export default{
+
+}
+</script>
 <template>
     <section class="load-more-section content-section-large container">
                     <div class="promos-page__section-header">

@@ -6,7 +6,7 @@
                     <div class="layout-footer__info-cell layout-footer__info-cell_company">
                         <div class="layout-footer__logo-area">
                             <a href="/" aria-label="Главная" class="layout-footer__link link-active">
-                                <img :src="getImageUrl('/_nuxt/img/c82967e.png')" loading="lazy" alt="Склад здоровья" width="300" height="25" class="layout-footer__logo">
+                                <img src="@/assets/images/icon.png" loading="lazy" alt="Склад здоровья" width="300" height="25" class="layout-footer__logo">
                             </a>
                         </div>
                         <div class="layout-footer__copyright text text_size_small">
@@ -25,7 +25,7 @@
                             </div> 
                             <ul class="footer-navigation__list">
                                 <li class="footer-navigation__list-item">
-                                    <a href="/apteki" class="footer-navigation__link text_weight_medium">
+                                    <a href="#" class="footer-navigation__link text_weight_medium">
                                         Аптеки
                                     </a>
                                 </li>
@@ -37,12 +37,12 @@
                             </div>
                             <ul class="footer-navigation__list">
                                 <li class="footer-navigation__list-item">
-                                    <a href="/sales" aria-current="page" class="footer-navigation__link text_weight_medium link-active_exact link-active">
+                                    <a href="/promos" aria-current="page" class="footer-navigation__link text_weight_medium link-active_exact link-active">
                                         Акции
                                     </a>
                                 </li>
                                 <li class="footer-navigation__list-item">
-                                    <a href="/help/order" class="footer-navigation__link text_weight_medium">
+                                    <a href="#" class="footer-navigation__link text_weight_medium">
                                         Как заказать
                                     </a>
                                 </li>
@@ -90,207 +90,3 @@ export default {
 },
 }
 </script>
-
-<!-- <style scoped>
-img {
-    overflow-clip-margin: content-box;
-    overflow: clip;
-}
-.mobile-apps-list__image {
-    vertical-align: middle;
-}
-img {
-    border-style: none;
-}
-.mobile-apps-list__link:first-child {
-    margin-left: 0;
-}
-.mobile-apps-list__link {
-    outline: none;
-    transition: opacity .15s ease-in-out;
-}
-.mobile-apps-list__item {
-    padding: 8px;
-}
-.mobile-apps-list__inner {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -8px;
-    padding: 0;
-    list-style: none;
-}
-.footer-downloads__apps {
-    margin-top: 16px;
-}
-.mobile-apps-list {
-    overflow: hidden;
-}
-.footer-downloads__label {
-    color: #9a9bb8;
-}
-.layout-footer__info-cell {
-    flex-grow: 1;
-    padding: 16px;
-    box-sizing: border-box;
-}
-.footer-navigation__column {
-    flex-grow: 1;
-    margin-left: 64px;
-}
-.footer-navigation__link {
-    color: inherit;
-    text-decoration: none;
-    outline: none;
-}
-.text_weight_medium {
-    font-weight: 500;
-}
-.footer-navigation__list-item {
-    margin-top: 16px;
-}
-user agent stylesheet
-li {
-    display: list-item;
-    text-align: -webkit-match-parent;
-}
-.footer-navigation__list {
-    margin: 24px 0 0;
-    padding: 0;
-    list-style: none;
-}
-user agent stylesheet
-ul {
-    display: block;
-    list-style-type: disc;
-    margin-block-start: 1em;
-    margin-block-end: 1em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    padding-inline-start: 40px;
-}
-.footer-navigation__label {
-    color: #9a9bb8;
-}
-.text_size_small {
-    font-size: 14px;
-    line-height: 16px;
-}
-.footer-navigation {
-    display: flex;
-}
-.footer-navigation__column:first-child {
-    margin-left: 0;
-}
-.layout-footer__info-cell {
-    flex-grow: 0;
-}
-.layout-footer__info-cell{
-    padding: 24px;
-}
-.layout-footer__info-cell {
-    flex-grow: 1;
-    padding: 16px;
-    box-sizing: border-box;
-}
-.layout-footer__info-cell {
-    flex-grow: 0;
-}
-.layout-footer__info-cell {
-    padding: 24px;
-}
-user agent stylesheet
-nav {
-    display: block;
-}
-.layout-footer__copyright {
-    color: #9a9bb8;
-    margin-top: 16px;
-}
-.text_size_small {
-    font-size: 14px;
-    line-height: 16px;
-}
-/* .text {
-    margin: 0;
-} */
-.layout-footer__logo {
-    max-width: 100%;
-    vertical-align: middle;
-}
-img {
-    border-style: none;
-}
-/* img[Attributes Style] {
-    width: 300px;
-    aspect-ratio: auto 300 / 25;
-    height: 25px;
-} */
-user agent stylesheet
-img {
-    overflow-clip-margin: content-box;
-    overflow: clip;
-}
-.layout-footer__link {
-    outline: none;
-}
-a {
-    background-color: transparent;
-}
-user agent stylesheet
-a:-webkit-any-link {
-    color: -webkit-link;
-    cursor: pointer;
-    text-decoration: underline;
-}
-.layout-footer__info-cell {
-    padding: 24px;
-}
-.layout-footer__info-cell {
-    flex-grow: 0;
-}
-.layout-footer__info-cell_company {
-    flex-basis: 320px;
-}
-.layout-footer__info-cell {
-    flex-grow: 1;
-    padding: 16px;
-    box-sizing: border-box;
-}
-.layout-footer__info-cell {
-    padding: 24px;
-}
-.layout-footer__info-cell {
-    flex-grow: 0;
-}
-.layout-footer__info-inner {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    margin: -16px;
-}
-.layout-footer__info-inner {
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin: -24px;
-}
-.layout-footer__info-inner {
-    flex-wrap: nowrap;
-}
-.layout-footer {
-    color: #fff;
-    background-color: #2d2b47;
-}
-.container {
-    max-width: 1240px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.layout-footer__info {
-    overflow: hidden;
-}
-.layout-footer__row {
-    padding-top: 48px;
-    padding-bottom: 48px;
-}
-
-</style> -->

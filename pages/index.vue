@@ -13,24 +13,20 @@ export default {
     };
   },
   methods: {
-    // получа
-    async fetchData() {
-        try {
-            const response = await fetch('/api/promo', {
-                method: "GET",
-            });
-
-            const data = await response.json();   
-
-            this.promos = data;
-        } 
-        catch (error) {
-            console.error("Error in fetchData:", error);
-        }
-    },
   },
-  async mounted() {
-    await this.fetchData();
+  async asyncData() {
+    try {
+        const apiUrl = process.env.API_SERVICE_URL + '/promo';
+        const responsePromo = await fetch(apiUrl, {
+            method: "GET",
+        });
+
+        const dataPromo = await responsePromo.json();   
+
+        return {promos: dataPromo}
+    } catch (error) {
+        console.error("Error in fetchData:", error);
+    }
   },
 
 }

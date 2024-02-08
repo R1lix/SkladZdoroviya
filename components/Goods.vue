@@ -9,31 +9,36 @@ export default {
     };
   },
   methods: {
-    // получение акций и товаров
-    async fetchData() {
-        try {
-                // запрос к товарам
-            const responseGoods = await fetch('/api/promo/'+ 405 +'/goods?limit='+this.limit+'&offset=' + this.offset,{
-                 method: 'GET',
-            });
-            const dataGoods = await responseGoods.json();
-            this.goods = this.goods.concat(dataGoods.goods);
+    async fetchData(){
+        try{
+        const responseGoods = await fetch('/api/promo/'+ 405 +'/goods?limit='+this.limit+'&offset=' + this.offset,{
+            method: 'GET',
+        });
+        const dataGoods = await responseGoods.json();
+        goods = goods.concat(dataGoods.goods);
 
-            if (Object.keys(this.goods) != null) {
-                console.log(Object.keys(this.goods));
-                this.offset += this.limit;
-            } else {
-                // document.getElementById('button').classList.add('hidden'); <-- не работает
-            }
+        if (Object.keys(this.goods) != null) {
+            console.log(Object.keys(this.goods));
+            this.offset += this.limit;
+        } else {
+            // document.getElementById('button').classList.add('hidden'); <-- не работает
+        }
+    } catch{
 
-        } catch (error) {
-            console.error("Error in fetchData:", error);
-            console.log(this.goods);
-        } 
-    },
+    }
+    }
   },
-  async mounted() {
-    await this.fetchData();
+  async asyncData() {
+    try{
+        const responseGoods = await fetch(process.env.API_SERVICE_URL+'/promo/'+ 405 +'/goods?limit='+12+'&offset=' + 0,{
+            method: 'GET',
+        });
+        const dataGoods = await responseGoods.json();
+        offset += limit;
+        return {goods: dataGoods}
+    } catch{
+
+    }
   },
 }
 </script>
@@ -125,7 +130,7 @@ export default {
                 </div>
             </div>
             <div class="button-section">
-                <button class="button-section-load-more ui-button ui-button__inner" @click="fetchData()" :id="'button'">
+                <button class="button-section-load-more ui-button ui-button__inner" @click.prevent="fetchData()" :id="'button'">
                     <span class="button-section-load-more-inner">
                         <i class="button-section-load-more-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg"><path d="M18.707 13.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L11 17.586V4a1 1 0 112 0v13.586l4.293-4.293a1 1 0 011.414 0z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>

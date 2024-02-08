@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'zdorovo',
+    title: 'Слклад здоровья',
     htmlAttrs: {
       lang: 'en'
     },
@@ -45,13 +45,14 @@ export default {
     '@nuxtjs/proxy',
   ],
 
-  proxy: {
-    '/api/': { target: 'https://sklad-zdorovo.ru', changeOrigin: true },
-  },
+  // proxy: {
+  //   '/api/': { target: 'https://sklad-zdorovo.ru', changeOrigin: true },
+  // },
 
   server: {
     host: '0.0.0.0',
-    port: 3000
+    port: 3000,
+    changeOrigin: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

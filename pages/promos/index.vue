@@ -56,48 +56,49 @@
 </template>
 
 <script>
-import Header from '~/components/Header.vue';
-import Footer from '~/components/Footer.vue';
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
 import moment from 'moment';
 import Specials from '@/components/Specials.vue';
 
 export default {
   name: 'IndexPage',
   components: { Header, Footer, Specials},
+
+  async asyncData(){
+
+    try{
+
+        const apiUrl = process.env.API_SERVICE_URL + '/promo';
+    
+        const response = await fetch(apiUrl, {
+            method: "GET",
+        });
+
+        const dataPromo = await response.json();   
+
+        dataPromo.promos.forEach(promo => {
+            promo.dateStart = moment(promo.dateStart).format('DD.MM.YYYY');
+            promo.dateEnd = moment(promo.dateEnd).format('DD.MM.YYYY');
+        });
+
+        return {promos: dataPromo}
+
+    } catch{
+        console.log("big trouble");
+    }
+  },
+
   data() {
     return {
-      promos: {},
+        promos: {},
     };
   },
+
   methods: {
     async handlePromoClick(id) {
         this.$router.push('/promos/' + id)
     },
-
-    // получа
-    async fetchData() {
-        try {
-            const response = await fetch('/api/promo', {
-                method: "GET",
-            });
-
-            const data = await response.json();   
-
-            this.promos = data;
-
-            data.promos.forEach(promo => {
-                promo.dateStart = moment(promo.dateStart).format('DD.MM.YYYY');
-                promo.dateEnd = moment(promo.dateEnd).format('DD.MM.YYYY');
-            });
-        } 
-        catch (error) {
-            console.error("Error in fetchData:", error);
-        }
-    },
-  },
-  async mounted() {
-    await this.fetchData();
-  },
+}
 };
-
 </script>

@@ -13,13 +13,12 @@
                         </a>
                     </li>
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <a href="/promos" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
-                            <span class="ui-link__text"><span itemprop="name">
+                        <nuxt-link class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item" to="/promos/">
+                            <span class="ui-link__text">
                                 Акции
-                            </span> 
-                            <meta itemprop="position" content="2">
-                        </span> <!---->
-                        </a>
+                            </span>
+                        </nuxt-link>     
+                        <meta itemprop="position" content="2">
                     </li>
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
                         <span itemprop="item">
@@ -168,56 +167,61 @@ export default {
       goods: [],
       limit: 12,
       offset: 0,
-      promoId: null
     };
   },
+  async asyncData({ params }){
+    try {
+        const apiUrl = process.env.API_SERVICE_URL;
+        const promoUrl = apiUrl + '/promo/' + params.id;
+        const goodsUrl = apiUrl + '/promo/' + params.id + '/goods?limit=12&offset=0';
+
+        const promoResponse = await fetch(promoUrl, {
+            method: 'GET'
+        })
+        const goodsResponse = await fetch(goodsUrl, {
+            method: 'GET'
+        })
+
+        if (!promoResponse.ok || !goodsResponse.ok) {
+            throw new Error('Failed to fetch data from API');
+        }
+
+        const promoData = await promoResponse.json();
+        const goodsData = await goodsResponse.json();
+
+        // Преобразование дат в нужный формат
+        promoData.dateStart = moment(promoData.dateStart).format('DD.MM.YYYY');
+        promoData.dateEnd = moment(promoData.dateEnd).format('DD.MM.YYYY');
+
+        return { promos: promoData, goods: goodsData.goods, promoId: params.id };
+    } catch (error) {
+        console.error(error);
+        // Обработка ошибки
+        return { promos: null, goods: null, promoId: params.id };
+    }
+},
   methods: {
-    // получение акций и товаров
-    async fetchData(params) {
-      try {
-        const response = await fetch('/api/promo/' + params.id, { // запрос к акциями по id
-          method: 'GET',
-        });
-
-        const responseGoods = await fetch('/api/promo/'+ params.id +'/goods?limit='+this.limit+'&offset=' + this.offset,{ //запрос к товарам по акции
-            method: 'GET',
-        });
-
-        const data = await response.json();      
-        const dataGoods = await responseGoods.json();
-        
-        this.promos = data;
-        this.goods = dataGoods.goods;
-
-        this.promos.dateStart = moment(this.promos.dateStart).format('DD.MM.YYYY');
-        this.promos.dateEnd = moment(this.promos.dateEnd).format('DD.MM.YYYY');
-
-        this.promoId = params.id;
-
-      } catch (error) {
-        console.error("Error in fetchData:", error);
-      }
-      
-    },
-    async LoadMore(){
-        const responseGoods = await fetch('/api/promo/'+ this.promoId +'/goods?limit='+this.limit+'&offset=' + this.offset,{ //запрос к товарам по акции
+    async LoadMore(params){
+        const apiUrl = process.env.API_SERVICE_URL;
+        const goodsUrl = apiUrl + '/promo/' + params.id + '/goods?limit='+this.limit+'&offset='+this.offset;
+        const responseGoods = await fetch(goodsUrl,{ //запрос к товарам по акции
             method: 'GET',
         });
 
         const dataGoods = await responseGoods.json();
         
         this.goods = this.goods.concat(dataGoods.goods);
+        console.log(Object.keys(this.goods));
 
         if (Object.keys(this.goods) != null) {
             console.log(Object.keys(this.goods));
             this.offset += this.limit;
+            return {goods}
         } else {
             // document.getElementById('button').classList.add('hidden'); <-- не работает
+            console.error(error);
         }
     }
-  },
-  async mounted() {
-    await this.fetchData(this.$route.params);
   },
 };
 </script>
