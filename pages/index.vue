@@ -9,26 +9,29 @@ export default {
     components: {Header, Footer, Specials, Goods},
     data() {
     return {
-      promos: {},
+      promos: {},// объект с промо-акциями
     };
   },
-  methods: {
-  },
+
   async asyncData() {
     try {
-        const apiUrl = process.env.API_SERVICE_URL + '/promo';
-        const responsePromo = await fetch(apiUrl, {
-            method: "GET",
-        });
 
-        const dataPromo = await responsePromo.json();   
+      const response = await fetch(process.env.baseUrl+'/promo', { // запрос ко всем промо-акциям
+        method: "GET",
+      });
 
-        return {promos: dataPromo}
+      // парсим ответ
+      const data = await response.json();
+
+      // возвращаем дату в объект с акциями
+      return { promos: data }; 
     } catch (error) {
-        console.error("Error in fetchData:", error);
+        // в случае оишбки вывод ошибки в консоль
+      console.error("Error in asyncData:", error); 
+      // возврат пустого объекта с акциями
+      return { promos: {} }; 
     }
   },
-
 }
 </script>
 

@@ -8,37 +8,35 @@ export default {
       offset: 0,
     };
   },
-  methods: {
-    async fetchData(){
-        try{
-        const responseGoods = await fetch('/api/promo/'+ 405 +'/goods?limit='+this.limit+'&offset=' + this.offset,{
-            method: 'GET',
-        });
-        const dataGoods = await responseGoods.json();
-        goods = goods.concat(dataGoods.goods);
+  async asyncData() {
+    try {
+      const limit = 12;
+      const offset = 0;
+      const response = await fetch('/api/promo/405/goods?limit=' + limit + '&offset='+ offset);
+      const data = await response.json();
 
-        if (Object.keys(this.goods) != null) {
-            console.log(Object.keys(this.goods));
-            this.offset += this.limit;
-        } else {
-            // document.getElementById('button').classList.add('hidden'); <-- не работает
-        }
-    } catch{
-
-    }
+      console.log(data);
+      
+      return { goods: data, limit, offset };
+    } catch (error) {
+      console.error("Error in asyncData:", error);
+      return { goods: [] };
     }
   },
-  async asyncData() {
-    try{
-        const responseGoods = await fetch(process.env.API_SERVICE_URL+'/promo/'+ 405 +'/goods?limit='+12+'&offset=' + 0,{
-            method: 'GET',
-        });
-        const dataGoods = await responseGoods.json();
-        offset += limit;
-        return {goods: dataGoods}
-    } catch{
-
-    }
+  methods: {
+    async fetchData() {
+      try {
+        const response = await fetch('/api/promo/405/goods?limit='+ this.limit + '&offset=' + this.offset);
+        const data = await response.json();
+        
+        if (data.length > 0) {
+          this.goods = this.goods.concat(data);
+          this.offset += this.limit;
+        }
+      } catch (error) {
+        console.error("Error in fetchData:", error);
+      }
+    },
   },
 }
 </script>
@@ -52,7 +50,7 @@ export default {
             <div class="load-more-section__part">
                 <div itemtype="http://schema.org/ItemList" itemscope="itemscope" class="goods-grid conainer-ignore-mobile">
                     <div class="goods-grid__inner">
-                        <div v-for="(goods, index) in goods" :key="index" itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
+                        <div v-for="(goods, index) in goods.goods" :key="index" itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
                             <div class="ui-card__preview ui-card__row ui-card__row_size_default">
                                 <div class="goods-tags goods-card__tags text text_size_caption">
                                     <ul class="goods-tags__list goods-tags__list_direction_vertical">
@@ -130,7 +128,7 @@ export default {
                 </div>
             </div>
             <div class="button-section">
-                <button class="button-section-load-more ui-button ui-button__inner" @click.prevent="fetchData()" :id="'button'">
+                <button class="button-section-load-more ui-button ui-button__inner" @click="fetchData()" :id="'button'">
                     <span class="button-section-load-more-inner">
                         <i class="button-section-load-more-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg"><path d="M18.707 13.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L11 17.586V4a1 1 0 112 0v13.586l4.293-4.293a1 1 0 011.414 0z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>

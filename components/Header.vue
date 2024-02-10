@@ -12,8 +12,8 @@
               </div>
             </div>
             <ul class="list-menu">
-              <li class="list-menu-item"><nuxt-link to="/">Главная</nuxt-link></li>
-              <li class="list-menu-item"><nuxt-link to="/promos/">Акции</nuxt-link></li>
+              <li class="list-menu-item"><a href="/">Главная</a></li>
+              <li class="list-menu-item"><a href="/promos">Акции</a></li>
               <li class="list-menu-item"><nuxt-link to="#">Аптеки</nuxt-link></li>
               <li class="list-menu-item"><nuxt-link to="#">Как заказать</nuxt-link></li>
             </ul>

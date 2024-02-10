@@ -13,12 +13,13 @@
                         </a>
                     </li>
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
-                        <nuxt-link class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item" to="/promos/">
-                            <span class="ui-link__text">
+                        <a href="/promos" class="ui-link link-active ui-link_theme_primary" tabindex="0" itemprop="item"><!----> 
+                            <span class="ui-link__text"><span itemprop="name">
                                 Акции
-                            </span>
-                        </nuxt-link>     
-                        <meta itemprop="position" content="2">
+                            </span> 
+                            <meta itemprop="position" content="2">
+                        </span> <!---->
+                        </a>
                     </li>
                     <li itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope="itemscope" class="ui-breadcrumbs__item">
                         <span itemprop="item">
@@ -83,7 +84,7 @@
                                         </span>
                                     </span> 
                                     <a href="#" class="" tabindex="-1">
-                                        <img :src="'https://sklad-zdorovo.ru' + goods.images" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
+                                        <img :src="'https://sklad-zdorovo.ru' + goods.images[0]" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
                                     </a>
                                 </div>
                             </div> 
@@ -133,7 +134,7 @@
                     </div>
                 </div>
                 <div class="button-section">
-                    <button class="button-section-load-more ui-button ui-button__inner" @click="LoadMore(params)" :id="'button'">
+                    <button class="button-section-load-more ui-button ui-button__inner" @click="LoadMore()">
                         <span class="button-section-load-more-inner">
                             <i class="button-section-load-more-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" width="24" class="ui-icon__svg"><path d="M18.707 13.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L11 17.586V4a1 1 0 112 0v13.586l4.293-4.293a1 1 0 011.414 0z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
@@ -159,7 +160,7 @@ export default {
   name: 'promoPage',
   components: { Header, Footer},
   validate({params}){
-    return /^\d+$/.test(params.id);
+    return /^\d+$/.test(params.id); // проверка параметров на валидность
   },
   data() {
     return {
@@ -167,59 +168,55 @@ export default {
       goods: [],
       limit: 12,
       offset: 0,
+      promoId: 0,
     };
   },
-  async asyncData({ params }){
+  async asyncData({params}){
     try {
-        const apiUrl = process.env.API_SERVICE_URL;
-        const promoUrl = apiUrl + '/promo/' + params.id;
-        const goodsUrl = apiUrl + '/promo/' + params.id + '/goods?limit=12&offset=0';
 
-        const promoResponse = await fetch(promoUrl, {
-            method: 'GET'
-        })
-        const goodsResponse = await fetch(goodsUrl, {
-            method: 'GET'
-        })
+        const response = await fetch(process.env.baseUrl+'/promo/' + params.id, { // запрос к акциями по id
+          method: 'GET',
+        });
 
-        if (!promoResponse.ok || !goodsResponse.ok) {
-            throw new Error('Failed to fetch data from API');
-        }
-
-        const promoData = await promoResponse.json();
-        const goodsData = await goodsResponse.json();
-
-        // Преобразование дат в нужный формат
-        promoData.dateStart = moment(promoData.dateStart).format('DD.MM.YYYY');
-        promoData.dateEnd = moment(promoData.dateEnd).format('DD.MM.YYYY');
-
-        return { promos: promoData, goods: goodsData.goods, promoId: params.id };
-    } catch (error) {
-        console.error(error);
-        // Обработка ошибки
-        return { promos: null, goods: null, promoId: params.id };
-    }
-},
-  methods: {
-    async LoadMore(params){
-        const apiUrl = process.env.API_SERVICE_URL;
-        const goodsUrl = apiUrl + '/promo/' + params.id + '/goods?limit='+this.limit+'&offset='+this.offset;
-        const responseGoods = await fetch(goodsUrl,{ //запрос к товарам по акции
+        const responseGoods = await fetch(process.env.baseUrl+'/promo/'+ params.id +'/goods?limit='+12+'&offset=' + 0,{ //запрос к товарам по акции
             method: 'GET',
         });
 
+        // парсим ответы
+        const data = await response.json();      
+        const dataGoods = await responseGoods.json();
+
+        // преобразуем дату в нужный формат
+        data.dateStart = moment(data.dateStart).format('DD.MM.YYYY');
+        data.dateEnd = moment(data.dateEnd).format('DD.MM.YYYY'); 
+
+        // возвращаем данные на страницу
+        return {promos: data, goods: dataGoods.goods, promoId: params.id}
+
+      } catch (error) {
+        console.error("Error in fetchData:", error);
+      }
+  },
+
+  methods: {
+    async LoadMore(){
+
+        const responseGoods = await fetch('/api/promo/'+ this.promoId +'/goods?limit='+this.limit+'&offset=' + this.offset,{ //запрос к товарам по акции
+            method: 'GET',
+        });
+
+        // парсим ответ
         const dataGoods = await responseGoods.json();
         
+        // добавляем к существующиму goods новые элементы
         this.goods = this.goods.concat(dataGoods.goods);
-        console.log(Object.keys(this.goods));
 
+        // условие на проверку пустого объекта, чтобы дальше запросы не проходили
         if (Object.keys(this.goods) != null) {
             console.log(Object.keys(this.goods));
             this.offset += this.limit;
-            return {goods}
         } else {
             // document.getElementById('button').classList.add('hidden'); <-- не работает
-            console.error(error);
         }
     }
   },

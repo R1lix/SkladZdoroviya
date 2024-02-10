@@ -45,14 +45,22 @@ export default {
     '@nuxtjs/proxy',
   ],
 
-  // proxy: {
-  //   '/api/': { target: 'https://sklad-zdorovo.ru', changeOrigin: true },
-  // },
+  proxy: {
+    '/api/': {
+      target: 'https://sklad-zdorovo.ru',
+      pathRewrite: { '^/api/': '/api/' },
+      changeOrigin: true,
+    }
+  },
 
   server: {
     host: '0.0.0.0',
     port: 3000,
     changeOrigin: true
+  },
+
+  env: {
+    baseUrl: process.env.API_SERVICE_URL,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
