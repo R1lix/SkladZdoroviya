@@ -8,31 +8,29 @@ export default {
       offset: 0,
     };
   },
-  async asyncData() {
+  async fetch() {
     try {
-      const limit = 12;
-      const offset = 0;
-      const response = await fetch('/api/promo/405/goods?limit=' + limit + '&offset='+ offset);
+      const response = await fetch('/api/group/main?offset='+this.offset+'&limit='+this.limit);
       const data = await response.json();
 
       console.log(data);
       
-      return { goods: data, limit, offset };
+      this.offset += this.limit;
+
+      this.goods = data.goods;
+
     } catch (error) {
       console.error("Error in asyncData:", error);
-      return { goods: [] };
     }
   },
   methods: {
     async fetchData() {
       try {
-        const response = await fetch('/api/promo/405/goods?limit='+ this.limit + '&offset=' + this.offset);
+        const response = await fetch('/api/group/main?offset='+this.offset+'&limit='+this.limit);
         const data = await response.json();
-        
-        if (data.length > 0) {
-          this.goods = this.goods.concat(data);
-          this.offset += this.limit;
-        }
+
+        this.goods = this.goods.concat(data.goods);
+        this.offset += this.limit;
       } catch (error) {
         console.error("Error in fetchData:", error);
       }
@@ -50,7 +48,7 @@ export default {
             <div class="load-more-section__part">
                 <div itemtype="http://schema.org/ItemList" itemscope="itemscope" class="goods-grid conainer-ignore-mobile">
                     <div class="goods-grid__inner">
-                        <div v-for="(goods, index) in goods.goods" :key="index" itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
+                        <div v-for="(goods, index) in goods" :key="index" itemtype="https://schema.org/Product" itemscope="itemscope" itemprop="itemListElement" class="ui-card ui-card_size_default ui-card_outlined goods-card goods-grid__cell goods-grid__cell_size_4">
                             <div class="ui-card__preview ui-card__row ui-card__row_size_default">
                                 <div class="goods-tags goods-card__tags text text_size_caption">
                                     <ul class="goods-tags__list goods-tags__list_direction_vertical">
@@ -77,7 +75,7 @@ export default {
                                         </span>
                                     </span> 
                                     <a href="/catalog/Bioderma-AVSderm-Krem-intensivnyy-uhod-75g-0-mes_270078288" class="" tabindex="-1">
-                                        <img :src="'https://sklad-zdorovo.ru' + goods.images" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
+                                        <img :src="'https://sklad-zdorovo.ru' + goods.images[0]" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
                                     </a>
                                 </div>
                             </div> 

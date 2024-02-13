@@ -1,12 +1,10 @@
 <script>
-import Header from '~/components/Header.vue';
-import Footer from '~/components/Footer.vue';
 import Specials from '@/components/Specials.vue';
 import Goods from '@/components/Goods.vue';
 
 export default {
     name: 'mainPage',
-    components: {Header, Footer, Specials, Goods},
+    components: {Specials, Goods},
     data() {
     return {
       promos: {},// объект с промо-акциями
@@ -32,30 +30,34 @@ export default {
       return { promos: {} }; 
     }
   },
+  computed: {
+  isPromosAvailable() {
+    return this.promos?.promos?.length >= 3;
+  }
+}
 }
 </script>
 
 <template>
     <div>
-        <Header/>
         <div class="default-page">
             <main class=" index-page">
                 <section class="container">
                     <div class="promos-into">
-                        <div class="promos-into-list" v-if="promos && promos.promos && promos.promos.length >= 3" >
+                        <div class="promos-into-list" v-if="isPromosAvailable" >
                             <div class="promos-into-list-firts">
-                                <a href="/promos/403" class="promos-into-list-link">
-                                    <img :src="'https://sklad-zdorovo.ru'+ promos.promos[2].image" loading="lazy" :alt="promos.title">
+                                <a :href="'/promos/'+promos.promos[2].id" class="promos-into-list-link">
+                                    <img :src="'https://sklad-zdorovo.ru'+ promos.promos[2].image" loading="lazy" :alt="promos.promos[2].title">
                                 </a>
                             </div>
                             <div class="promos-into-list-second">
-                                <a href="/promos/415" class="promos-into-list-link">
-                                    <img :src="'https://sklad-zdorovo.ru' + promos.promos[0].image" loading="lazy" :alt="promos.title">
+                                <a :href="'/promos/'+promos.promos[0].id" class="promos-into-list-link">
+                                    <img :src="'https://sklad-zdorovo.ru' + promos.promos[0].image" loading="lazy" :alt="promos.promos[0].title">
                                 </a>
                             </div>
                             <div class="promos-into-list-third">
-                                <a href="/promos/404" class="promos-into-list-link">
-                                    <img :src="'https://sklad-zdorovo.ru' + promos.promos[1].image" loading="lazy" :alt="promos.title">
+                                <a :href="'/promos/'+promos.promos[1].id" class="promos-into-list-link">
+                                    <img :src="'https://sklad-zdorovo.ru' + promos.promos[1].image" loading="lazy" :alt="promos.promos[1].title">
                                 </a>
                             </div>
                         </div>
@@ -63,7 +65,6 @@ export default {
                 </section>
                 <Specials/>
                 <Goods/>
-                <Footer/>
             </main>
         </div>
     </div>

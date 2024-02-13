@@ -43,15 +43,18 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
+    "@nuxtjs/svg",
   ],
 
   proxy: {
     '/api/': {
       target: 'https://sklad-zdorovo.ru',
-      pathRewrite: { '^/api/': '/api/' },
+      pathRewrite: { '^/api': '/api/' },
       changeOrigin: true,
     }
   },
+
+  layout: 'default',
 
   server: {
     host: '0.0.0.0',

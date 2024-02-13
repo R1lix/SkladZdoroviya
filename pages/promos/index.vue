@@ -1,6 +1,5 @@
 <template>
     <div>
-      <Header/>
       <main class="promos-page page">
           <header class="page-header container">
               <div itemtype="http://schema.org/BreadcrumbList" itemscope="itemscope" class="ui-breadcrumbs text text_weight_medium page-header__breadcrumbs text text_size_caption">
@@ -51,19 +50,16 @@
           </section>
           <Specials/>
       </main>
-      <Footer />
     </div>
   </template>
   
   <script>
-  import Header from '~/components/Header.vue';
-  import Footer from '~/components/Footer.vue';
   import moment from 'moment';
   import Specials from '@/components/Specials.vue';
   
   export default {
     name: 'IndexPage',
-    components: { Header, Footer, Specials},
+    components: {Specials},
     data() {
       return {
         promos: {},
