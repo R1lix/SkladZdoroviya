@@ -243,6 +243,10 @@ i {
     outline: none;
     transition: color .15s ease-in-out;
 }
+.special-preview__image{
+    width: 100%;
+    height: auto;
+}
 .goods-card__name {
     display: -webkit-box;
     max-height: 54px;
@@ -313,6 +317,16 @@ i {
 .load-more-section__part:nth-child(1n+2) {
     margin-top: 24px;
 }
+.promo-preview__image{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #f3f3f9;
+    overflow: hidden;
+    pointer-events: none;
+}
 .text_size_headline {
     font-size: 20px;
     line-height: 24px;
@@ -320,6 +334,14 @@ i {
 .content-section-large {
     margin-top: 48px;
     margin-bottom: 48px;
+    width: 100%;
+}
+.promos-grid__inner{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: -8px;
+    list-style: none;
 }
 .ui-breadcrumbs__item:nth-last-child(1n+2):after {
     content: "•";

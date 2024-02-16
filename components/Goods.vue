@@ -11,13 +11,13 @@ export default {
   async fetch() {
     try {
       const response = await fetch('/api/group/main?offset='+this.offset+'&limit='+this.limit);
-      const data = await response.json();
+      const dataGoods = await response.json();
 
-      console.log(data);
+      console.log(dataGoods);
       
       this.offset += this.limit;
 
-      this.goods = data.goods;
+      this.goods = dataGoods.goods;
 
     } catch (error) {
       console.error("Error in asyncData:", error);

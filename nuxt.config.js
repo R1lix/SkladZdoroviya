@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'Слклад здоровья',
+    title: 'Склад здоровья',
     htmlAttrs: {
       lang: 'en'
     },

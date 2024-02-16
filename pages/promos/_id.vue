@@ -36,7 +36,7 @@
                         <img :src="'https://sklad-zdorovo.ru' + promos.image + ''" 
                         :srcset="'https://sklad-zdorovo.ru' + promos.image + ''" 
                         alt="Здоровье и красота в один клик" 
-                        class="promo-details-page__image">
+                        class="promo-details-page__image" :alt="promos.title">
 
                     </div>
                 </div> 
@@ -67,15 +67,15 @@
                                     <span class="goods-card__favorite">
                                         <span class="goods-favorite-icon">
                                             <i class="ui-icon ui-icon_size_24 ui-icon_heart-fill goods-favorite-icon__filled">
-                                                <img src="@/assets/images/goods-heart.svg" alt="">
+                                                <img src="@/assets/images/goods-heart.svg" alt="goods-heart">
                                             </i> 
                                             <i class="ui-icon ui-icon_size_24 ui-icon_heart goods-favorite-icon__outline">
-                                                <img src="@/assets/images/goods-heart-no.svg" alt="">
+                                                <img src="@/assets/images/goods-heart-no.svg" alt="goods-heart-no">
                                             </i>
                                         </span>
                                     </span> 
                                     <a href="#" class="" tabindex="-1">
-                                        <img :src="'https://sklad-zdorovo.ru' + goods.images[0]" loading="lazy" alt="Bioderma АВСдерм Крем интенсивный уход 75г 0+мес" itemprop="image" class="goods-photo goods-card__image">
+                                        <img :src="'https://sklad-zdorovo.ru' + goods.images[0]" :alt="goods.title" loading="lazy" itemprop="image" class="goods-photo goods-card__image">
                                     </a>
                                 </div>
                             </div> 
@@ -106,7 +106,7 @@
                                     <button tabindex="0" type="button" class="ui-button ui-button_theme_primary ui-button_corners_smooth ui-button_size_small ui-button_fluid">
                                         <span class="ui-button__inner">
                                             <i class="ui-icon ui-icon_size_24 ui-icon_pharmacy ui-button__icon ui-button__icon_prefix">
-                                                <img src="@/assets/images/goods-icon-home-and-heart.svg" alt="">
+                                                <img src="@/assets/images/goods-icon-home-and-heart.svg" alt="goods-icon-home-and-heart">
                                             </i> 
                                             <span class="ui-button__content">В наличии <span>от {{ goods.startPrice}} ₽</span>
                                             </span> <!---->
@@ -121,7 +121,7 @@
                     <button class="button-section-load-more ui-button ui-button__inner" @click="LoadMore()">
                         <span class="button-section-load-more-inner">
                             <i class="button-section-load-more-icon">
-                                <img src="@/assets/images/button-arrow-load-more.svg" alt="">
+                                <img src="@/assets/images/button-arrow-load-more.svg" alt="button-arrow-load-more">
                             </i>
                             <span class="button-section-load-more-inner-content">
                                 Показать еще

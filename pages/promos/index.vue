@@ -60,6 +60,7 @@
   export default {
     name: 'IndexPage',
     components: {Specials},
+    title: 'Акции',
     data() {
       return {
         promos: {},
