@@ -37,7 +37,6 @@
                         :srcset="'https://sklad-zdorovo.ru' + promos.image + ''" 
                         alt="Здоровье и красота в один клик" 
                         class="promo-details-page__image" :alt="promos.title">
-
                     </div>
                 </div> 
                 <div class="promo-details-page__info">

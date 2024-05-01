@@ -51,6 +51,11 @@ export default {
       target: 'https://sklad-zdorovo.ru',
       pathRewrite: { '^/api': '/api/' },
       changeOrigin: true,
+    },
+    '/sklad/api/':{
+      target: 'https://dev.andalex.biz',
+      pathRewrite: {'^/sklad/api/': '/sklad/api/support'},
+      changeOrigin: true,
     }
   },
 
@@ -68,5 +73,15 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-  }
+  },
+
+  io: {
+    // настройки Socket.IO
+    sockets: [
+      {
+        name: 'main',
+        url: 'http://localhost:3000', // URL вашего сервера Socket.IO
+      },
+    ],
+  },
 }

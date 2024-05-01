@@ -8,6 +8,7 @@ export default {
     data() {
     return {
       promos: {},// объект с промо-акциями
+      message: ''
     };
   },
 
@@ -33,7 +34,7 @@ export default {
   computed: {
   isPromosAvailable() {
     return this.promos?.promos?.length >= 3;
-  }
+  },
 }
 }
 </script>
@@ -69,3 +70,40 @@ export default {
         </div>
     </div>
 </template>
+
+<style scoped>
+.popup-chat {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 9999;
+}
+
+.close-chat {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.chat-messages {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.chat-input {
+  width: 80%;
+  margin-right: 10px;
+}
+
+.send-button {
+  padding: 5px 10px;
+}
+
+.open-chat{
+  cursor: pointer;
+  position: absolute;
+}
+</style>
