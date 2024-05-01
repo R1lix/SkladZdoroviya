@@ -10,6 +10,7 @@ data() {
         device: 'testAuthDevice3',
         countMessage: 10,
         data: null,
+        unreadMessage: 0,
 
         messageObject: {
             message: null,
@@ -33,6 +34,15 @@ data() {
 methods: {
 toggleChat() {
     this.isChatOpen = !this.isChatOpen; // открытие и закрытие чата
+
+    if (this.isChatOpen && this.unreadMessage.count > 0) {
+        this.readMessages(); // откпрвка запроса на прочтение сообщений
+    }
+    else
+    {
+        this.unreadMessage.count = 0;
+    }
+
     // скролл вниз сообщения
     this.$nextTick(() => {
         this.scrollToBottom();
@@ -41,10 +51,12 @@ toggleChat() {
 connectWebSocket() {
     this.ws = new WebSocket(`${this.ws_host}/chat?Device=${this.device}`); // подключение
 
-    this.ws.onopen = () => { // при открытии подключения вывод последних сообщений и скролл вниз
+    this.ws.onopen = () => { // при открытии подключения вывод последних сообщений, непрочитанных сообщений и скролл вниз
         console.log('WebSocket connection established');
 
         this.getLastMessages();
+
+        this.getUnreadedMessages();
 
         this.$nextTick(() => {
             this.scrollToBottom();
@@ -72,6 +84,14 @@ connectWebSocket() {
             console.log('OPERATOR');
             console.log(receivedData);
             this.messages.push({sender: 'OPERATOR', content: receivedData.message, time: receivedData.time, attachments: receivedData.attachments});
+
+            if(this.isChatOpen){ // если чат открылся или открыт, то прочитываем сообщения и берем непрочитанные, чтобы не сломался счетчик
+                this.readMessages();
+                this.getUnreadedMessages();
+            }
+            else{
+                this.unreadMessage.count++;
+            }
         }     
 
         this.countMessage++;
@@ -85,6 +105,52 @@ connectWebSocket() {
         console.log('WebSocket closed', event.reason);
         this.ws = null;
     };
+},
+async readMessages(){
+    try{
+        const headerDevice = new Headers({
+            'Device-Uid': this.device,
+        });
+
+        const response = await fetch(`/sklad/api/`+`/message/read`, {
+            method: 'PUT',
+            headers: headerDevice
+        });
+
+        if (!response.ok){
+            throw new Error('Network response was not ok');
+        }
+        else{
+            this.unreadMessage = await response.json();
+            console.log(`unreaded messages count is: `+this.unreadMessage.count);
+        }
+    }
+    catch(error){
+        console.error('Failed to fetch messages:', error);
+    }
+},
+async getUnreadedMessages(){
+    try{
+        const headerDevice = new Headers({
+            'Device-Uid': this.device
+        });
+
+        const response = await fetch(`/sklad/api/`+`/message/unreaded`, {
+            method: 'GET',
+            headers: headerDevice
+        });
+
+        if (!response.ok){
+            throw new Error('Network response was not ok');
+        }
+        else{
+            this.unreadMessage = await response.json();
+            console.log(`unreaded messages count is: `+this.unreadMessage.count);
+        }
+    }
+    catch(error){
+        console.error('Failed to fetch messages:', error);
+    }
 },
 async getLastMessages(){
     // заголовок с девайсом
@@ -220,9 +286,15 @@ beforeDestroy() {
 
 <template>
     <div class="chatbot__show">
+
       <button class="chatbot__show__toggler" rel="preload" v-show="!isChatOpen" id="open_btn" @click="toggleChat">
         <span class="material-symbols-outlined"><img src="@/assets/images/chat-icon.svg" alt="Чат"></span>
+
+        <div v-show="unreadMessage.count > 0" class="chatbot__show__toggler__unreaded">
+            <span class="chatbot__show__toggler__unreaded-count">{{ unreadMessage.count }}</span>
+        </div>
       </button>
+
       <div class="chatbot__main" id="chat" rel="preload" v-show="isChatOpen">
             <div class="chatbot__main__chat-header">
                 <div class="chatbot__main__chat-header__h2-content">
@@ -286,6 +358,27 @@ beforeDestroy() {
   </template> 
 
 <style scoped>
+
+.chatbot__show__toggler__unreaded {
+    height: 28px;
+    width: 28px;
+    display: flex;
+    background-color: #9360FF;
+    justify-content: center;
+    align-items: center;
+    border-radius: 70%;
+    position: relative; /* Позиционируем относительно родительского блока */
+    left: 20px;
+    bottom: 26px;
+}
+
+.chatbot__show__toggler__unreaded-count {
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    position: absolute; /* Позиционируем абсолютно внутри родительского блока */
+}
 .chatbot__main__chatbox__chat__attachments-item-href__img-image-operator {
     width: 100%;
     max-width: 100%;
@@ -409,7 +502,6 @@ beforeDestroy() {
     line-height: 32px;
     border-radius: 4px;
     margin: 0 10px 7px 0;
-    margin-left: 20px;
 }
 .chatbot__main__chatbox .outgoing{
     margin: 5px 0;
@@ -430,7 +522,7 @@ beforeDestroy() {
 .incoming p{
     background: #969696;
     border-radius: 10px 10px 10px 0;
-    margin-left:  30px;
+    margin-left:  15px;
 }
 .outgoing p{
     background: #3D00BE;
